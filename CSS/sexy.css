@@ -1,0 +1,40 @@
+.mainDiv {
+	margin-top: 1em;
+	padding-top: 2%;
+    padding-bottom: 5%;
+    background: #FFFFFF;
+    border-width: 1px;
+    border-style: solid;
+	border-color: #d7d7d7;
+	border-radius: 5px;
+}
+
+.accordion {
+    margin-bottom: 2em;
+}
+
+.accordion-item {
+    border-color: #0d6efd;
+}
+
+.accordion-button {
+    color:#0d6efd;
+    font-size: 0.7em;
+}
+
+.molDiv {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.molImage {
+	width: 70%;
+}
+
+.spinnerShow {
+	text-align: center;
+}
+
+.spinnerShow img {
+	width: 8%;
+}

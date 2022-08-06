@@ -13,59 +13,88 @@
     <body>
 
         <div id="app">
-            <h1>Machine Learning Web Application</h1>
-            <p>This app will help you estimate the impact of a mutation in a given protein.</p>
-            <hr>
-            <!-- About -->
-            <div class="aboutShow" v-if="aboutShow">
-                <h2>About</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum odio vitae dignissim consequat. Aliquam in commodo odio. Duis lacinia viverra bibendum. Curabitur nec dignissim metus, id iaculis ex. Suspendisse auctor dictum vehicula. Nullam ut lorem lacinia, venenatis dui vel, rhoncus turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend orci sed vestibulum luctus. Sed eu arcu neque. Sed ut diam suscipit, pulvinar ante vel, rutrum tortor. Phasellus sollicitudin arcu ullamcorper urna vestibulum blandit. Quisque vitae dapibus ex, nec mollis dui. Morbi ac dignissim lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-            </div>
-            <!-- HowTo -->
-            <div class="howtoShow">
-                <h2>How to ...</h2>
-                <p>Sed hendrerit massa non mauris feugiat imperdiet. Phasellus libero dolor, dapibus vitae sem in, hendrerit feugiat metus. Mauris vitae sem vestibulum, accumsan dolor in, eleifend dolor. Donec mattis hendrerit nulla. Sed fermentum aliquet magna, sed tristique magna. Nulla facilisi. Nam a ex at lorem cursus tincidunt.</p>
-                <!-- This is temporary to show how the v-if works -->
-                <div>
-                    <button type="button" class="btn btn-primary" @click="show('aboutShow')">About</button>
-                    <button type="button" class="btn btn-primary" @click="show('dnaShow')">DNA</button>
-                    <button type="button" class="btn btn-primary" @click="show('aaShow')">Amino Acid</button>
-                    <button type="button" class="btn btn-primary" @click="show('spinnerShow')">Spinner</button>
-                    <button type="button" class="btn btn-primary" @click="show('resultsShow')">Results</button>
+
+            <!-- Navigation bar -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">MLWA</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="#" @click="show('dnaShow')">DNA</a>
+                            <a class="nav-link" href="#" @click="show('aaShow')">Amino Acid</a>
+                            <a class="nav-link" href="#" @click="show('aboutShow')">About</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- DNA Mutation -->
-            <div class="dnaShow" v-if="dnaShow">
-                <h2>DNA Mutations</h2>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <div class="card mb-3" style="max-width: 540px;">
-                                <div class="row g-0">
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <img src="..." class="img-fluid rounded-end" alt="...">
-                                    </div>
+            </nav>
+
+            <!-- Main part of the website -->
+            <div class="container mainDiv">
+
+                <h1>Machine Learning Web Application</h1>
+                <p>This app will help you estimate the impact of a mutation in a given protein.</p>
+                <hr>
+
+                <!-- About -->
+                <div class="aboutShow container" v-if="aboutShow">
+                    <h2>About</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum odio vitae dignissim consequat. Aliquam in commodo odio. Duis lacinia viverra bibendum. Curabitur nec dignissim metus, id iaculis ex. Suspendisse auctor dictum vehicula. Nullam ut lorem lacinia, venenatis dui vel, rhoncus turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend orci sed vestibulum luctus. Sed eu arcu neque. Sed ut diam suscipit, pulvinar ante vel, rutrum tortor. Phasellus sollicitudin arcu ullamcorper urna vestibulum blandit. Quisque vitae dapibus ex, nec mollis dui. Morbi ac dignissim lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                </div>
+
+                <!-- HowTo -->
+                <div class="howtoShow container" v-if="howtoShow">
+                    <div class="accordion" id="accordionHowTo">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">How to ...</button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionHowTo">
+                                <div class="accordion-body">
+                                    Sed hendrerit massa non mauris feugiat imperdiet. Phasellus libero dolor, dapibus vitae sem in, hendrerit feugiat metus. Mauris vitae sem vestibulum, accumsan dolor in, eleifend dolor. Donec mattis hendrerit nulla. Sed fermentum aliquet magna, sed tristique magna. Nulla facilisi. Nam a ex at lorem cursus tincidunt.
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <div class="card mb-3" style="max-width: 540px;">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="..." class="img-fluid rounded-start" alt="...">
+                    </div>
+                </div>
+
+                <!-- DNA Mutation -->
+                <div class="dnaShow" v-if="dnaShow">
+                    <h2>DNA Mutations</h2>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Old DNA Sequence
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                    <div class="row g-0">
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 molDiv">
+                                            <img src="IMG/adenine.png" class="img-fluid rounded-end molImage" alt="adenine">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        New DNA Sequence
+                                    </div>
+                                    <div class="row g-0">
+                                        <div class="col-md-4 molDiv">
+                                            <img src="IMG/adenine.png" class="img-fluid rounded-start molImage" alt="adenine">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -73,39 +102,42 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- AA Mutation -->
-            <div class="aaShow" v-if="aaShow">
-                <h2>Amino Acid Mutations</h2>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <div class="card mb-3" style="max-width: 540px;">
-                                <div class="row g-0">
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                        </div>
+
+                <!-- AA Mutation -->
+                <div class="aaShow" v-if="aaShow">
+                    <h2>Amino Acid Mutations</h2>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Old Amino Acid Sequence
                                     </div>
-                                    <div class="col-md-4">
-                                        <img src="..." class="img-fluid rounded-end" alt="...">
+                                    <div class="row g-0">
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 molDiv">
+                                            <img src="IMG/arginine.png" class="img-fluid rounded-end molImage" alt="arginine">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <div class="card mb-3" style="max-width: 540px;">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="..." class="img-fluid rounded-start" alt="...">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        New Amino Acid Sequence
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                    <div class="row g-0">
+                                        <div class="col-md-4 molDiv">
+                                            <img src="IMG/arginine.png" class="img-fluid rounded-start molImage" alt="arginine">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,20 +145,20 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Spinner -->
-            <div class="spinnerShow" v-if="spinnerShow">
-                <div>
+
+                <!-- Spinner -->
+                <div class="spinnerShow" v-if="spinnerShow">
                     <img src="IMG/spinner.gif"> <!-- This won't work just yet -->
                 </div>
-            </div>
-            <!-- Results -->
-            <div class="resultsShow" v-if="resultsShow">
-                <h2>Results</h2>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
+
+                <!-- Results -->
+                <div class="resultsShow" v-if="resultsShow">
+                    <h2>Results</h2>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
+                        </div>
                     </div>
                 </div>
             </div>
