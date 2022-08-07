@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 # DNA Sequence (predicted)
 dna_seq = "atgagctattatcatcatcatcatcatcatgattatgatattccgaccaccgaaaacctgtattttcagggcgcgatgggcattctgggcagcggccagaaacattttgaaaaacgccgcaacccggcggcgggcctgattcagagcgcgtggcgcttttatgcgaccaacctgagccgcaccgatctgcatagcacctggcagtattatgaacgcaccgtgaccgtgccgatgtatcgcggcctggaagatctgaccccgggcctgaaagtgagcattcgcgcggtgtgcgtgatgcgctttctggtgagcaaacgcaaatttaaagaaagcctgcgcctggat"
@@ -10,6 +11,7 @@ aa_seq = "msyyhhhhhhdydipttenlyfqgamgilgsgqkhfekrrnpaagliqsawrfyatnlsrtdlhstwqyy
 aa_seq = aa_seq.upper()
 
 app = Flask(__name__)
+CORS(app)
 
 # Route for the URL "/"
 @app.route("/")
