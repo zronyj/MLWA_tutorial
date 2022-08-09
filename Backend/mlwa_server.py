@@ -2,6 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 
 # DNA Sequence (predicted)
+# Reverse translated from AA sequence
+# https://www.bioinformatics.org/sms2/rev_trans.html
 dna_seq = "atgagctattatcatcatcatcatcatcatgattatgatattccgaccaccgaaaacctgtattttcagggcgcgatgggcattctgggcagcggccagaaacattttgaaaaacgccgcaacccggcggcgggcctgattcagagcgcgtggcgcttttatgcgaccaacctgagccgcaccgatctgcatagcacctggcagtattatgaacgcaccgtgaccgtgccgatgtatcgcggcctggaagatctgaccccgggcctgaaagtgagcattcgcgcggtgtgcgtgatgcgctttctggtgagcaaacgcaaatttaaagaaagcctgcgcctggat"
 dna_seq = dna_seq.upper()
 
@@ -16,7 +18,7 @@ CORS(app)
 # Route for the URL "/"
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World! How are you?</p>"
+    return "<p>Hello, Marlene! Is this the web app you'd like?</p>"
 
 # Route for the URL "/dnaseq" --> DNA
 @app.route("/dnaseq")
