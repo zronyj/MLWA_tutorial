@@ -37,6 +37,16 @@
 	display: inline-block;
 }
 
+.highlight {
+	background-color: #0000ff;
+	color: #ffffff;
+}
+
+.lowlight {
+	background-color: #e2e2e2;
+	color: #000000;
+}
+
 .molDiv {
 	vertical-align: middle;
 	text-align: center;

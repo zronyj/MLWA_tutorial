@@ -74,11 +74,11 @@
                                     <div class="row g-0">
                                         <div class="col-md-8">
                                             <div class="card-body secuencia">
-                                                <span class="codeSeq" v-for="(item, index) in dnaSequence" :id="index">{{item}}</span>
+                                                <span class="codeSeq" v-for="(item, index) in dnaSequence" :id="index" :class="[dna == index ? 'highlight' : 'lowlight']">{{item}}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 molDiv">
-                                            <img src="IMG/adenine.png" class="img-fluid rounded-end molImage" alt="adenine">
+                                            <img :src="'IMG/' + dnaMut[dnaSequence[dna]][1]" class="img-fluid rounded-end molImage" alt="dnaMut[dnaSequence[dna]][0]">
                                         </div>
                                     </div>
                                 </div>
@@ -101,6 +101,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row container editSeq">
+                            <!-- Slider -->
+                            <div class="container col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <label for="dnaSlider" class="form-label">Select nucleotide:</label>
+                                <input type="range" class="form-range" min="0" :max="dnaSequence.length - 1" id="dnaSlider" v-model="dna">
+                            </div>
+                            <!-- Botones (en grupo) -->
+                            <div class="container col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="btn-group" role="group" aria-label="Buttons to select alternative nucleotide">
+                                    <div class="row mutOpts">
+                                        <div class="col mutOpt" v-for="(value, name, index) in dnaMut">
+                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off">
+                                            <label class="btn btn-outline-primary" :for="'btnRadio' + index" :title="value[0]">{{name}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -117,11 +135,11 @@
                                     <div class="row g-0">
                                         <div class="col-md-8">
                                             <div class="card-body secuencia">
-                                                <span class="codeSeq" v-for="(item, index) in aaSequence" :id="index">{{item}}</span>
+                                                <span class="codeSeq" v-for="(item, index) in aaSequence" :id="index" :class="[aa == index ? 'highlight' : 'lowlight']">{{item}}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 molDiv">
-                                            <img src="IMG/arginine.png" class="img-fluid rounded-end molImage" alt="arginine">
+                                            <img :src="'IMG/' + aaMut[aaSequence[aa]][1]" class="img-fluid rounded-end molImage" alt="aaMut[aaSequence[aa]][0]">
                                         </div>
                                     </div>
                                 </div>
@@ -139,6 +157,24 @@
                                             <div class="card-body">
                                                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row container editSeq">
+                            <!-- Slider -->
+                            <div class="container col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <label for="aaSlider" class="form-label">Select amino acid:</label>
+                                <input type="range" class="form-range" min="0" :max="aaSequence.length - 1" id="aaSlider" v-model="aa">
+                            </div>
+                            <!-- Botones (en grupo) -->
+                            <div class="container col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="btn-group" role="group" aria-label="Buttons to select alternative amino acid">
+                                    <div class="row mutOpts">
+                                        <div class="col mutOpt" v-for="(value, name, index) in aaMut">
+                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off">
+                                            <label class="btn btn-outline-primary" :for="'btnRadio' + index" :title="value[0]">{{name}}</label>
                                         </div>
                                     </div>
                                 </div>
