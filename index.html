@@ -87,15 +87,16 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="card mb-3">
                                     <div class="card-header">
-                                        New DNA Sequence
+                                        New DNA Sequence<br>
+                                        <span class="codeIndi">[{{dnaMut[dnaPostSequence[dna]][0]}}]</span>
                                     </div>
                                     <div class="row g-0">
                                         <div class="col-md-4 molDiv">
-                                            <img src="IMG/adenine.png" class="img-fluid rounded-start molImage" alt="adenine">
+                                            <img :src="'IMG/' + dnaMut[dnaPostSequence[dna]][1]" class="img-fluid rounded-end molImage" alt="dnaMut[dnaPostSequence[dna]][0]">
                                         </div>
                                         <div class="col-md-8">
-                                            <div class="card-body">
-                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="card-body secuencia">
+                                                <span class="codeSeq" v-for="(item2, index2) in dnaPostSequence" :id="index2" :class="[dna == index2 ? 'redlight' : 'lowlight']">{{item2}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -107,19 +108,33 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="slider">
                                     <label for="dnaSlider" class="form-label">Select nucleotide:&nbsp;&nbsp;</label><span class="codeIndi">[{{+dna + 1}}]</span>
-                                    <input type="range" class="form-range" min="0" :max="dnaSequence.length - 1" id="dnaSlider" v-model="dna">
+                                    <input type="range" class="form-range" min="0" :max="dnaSequence.length - 1" id="dnaSlider" v-model="dna" v-on:change="updateDNAMut()" :disabled="dnaSlider">
                                 </div>
                             </div>
                             <!-- Botones (en grupo) -->
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="btn-group" role="group" aria-label="Buttons to select alternative nucleotide">
-                                    <div class="container row mutOpts">
+                                    <div class="container row mutOpts" style="display: contents;">
                                         <div class="col mutOpt" v-for="(value, name, index) in dnaMut">
-                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off" v-on:click="onDNA(name)">
                                             <label class="btn btn-outline-primary" :for="'btnRadio' + index" :title="value[0]">{{name}}</label>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 finalBox">
+                                <h5>Final</h5>
+                                <div class="row">
+                                    <div class="col-6 mutDesc">
+                                        <span>Mutation code:</span>
+                                    </div>
+                                    <div class="col-6 mutCode">
+                                        <input type="text" name="mutcode" v-model="dnaMutCode" disabled="true">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success runButton">Run model!</button>
                             </div>
                         </div>
                     </div>
@@ -151,15 +166,16 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="card mb-3">
                                     <div class="card-header">
-                                        New Amino Acid Sequence
+                                        New Amino Acid Sequence<br>
+                                        <span class="codeIndi">[{{aaMut[aaPostSequence[aa]][0]}}]</span>
                                     </div>
                                     <div class="row g-0">
                                         <div class="col-md-4 molDiv">
-                                            <img src="IMG/arginine.png" class="img-fluid rounded-start molImage" alt="arginine">
+                                            <img :src="'IMG/' + aaMut[aaPostSequence[aa]][1]" class="img-fluid rounded-end molImage" alt="aaMut[aaPostSequence[aa]][0]">
                                         </div>
                                         <div class="col-md-8">
-                                            <div class="card-body">
-                                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="card-body secuencia">
+                                                <span class="codeSeq" v-for="(item2, index2) in aaPostSequence" :id="index2" :class="[aa == index2 ? 'redlight' : 'lowlight']">{{item2}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -171,7 +187,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="slider">
                                     <label for="aaSlider" class="form-label">Select amino acid:&nbsp;&nbsp;</label><span class="codeIndi">[{{+aa + 1}}]</span>
-                                    <input type="range" class="form-range" min="0" :max="aaSequence.length - 1" id="aaSlider" v-model="aa">
+                                    <input type="range" class="form-range" min="0" :max="aaSequence.length - 1" id="aaSlider" v-model="aa" v-on:change="updateAAMut()" :disabled="aaSlider">
                                 </div>
                             </div>
                             <!-- Botones (en grupo) -->
@@ -179,11 +195,25 @@
                                 <div class="btn-group" role="group" aria-label="Buttons to select alternative amino acid">
                                     <div class="container row mutOpts">
                                         <div class="col mutOpt" v-for="(value, name, index) in aaMut">
-                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off" v-on:click="onAA(name)">
                                             <label class="btn btn-outline-primary" :for="'btnRadio' + index" :title="value[0]">{{name}}</label>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 finalBox">
+                                <h5>Final</h5>
+                                <div class="row">
+                                    <div class="col-6 mutDesc">
+                                        Mutation code:
+                                    </div>
+                                    <div class="col-6 mutCode">
+                                        <input type="text" name="mutcode" v-model="aaMutCode" disabled="true">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success runButton">Run model!</button>
                             </div>
                         </div>
                     </div>

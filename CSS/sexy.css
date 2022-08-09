@@ -50,6 +50,11 @@
 	color: #ffffff;
 }
 
+.redlight {
+	background-color: #ffffff;
+	color: #ff0000;
+}
+
 .lowlight {
 	background-color: #e2e2e2;
 	color: #000000;
@@ -84,6 +89,31 @@
 
 .mutOpt label {
     width: 2.5em;
+}
+
+.finalBox {
+    margin: 0.5em;
+    padding: 1em;
+    border-radius: 5px;
+    background-color: #eaeaff;
+}
+
+.mutDesc {
+    text-align: right;
+    vertical-align: middle;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.mutCode {
+    text-align: left;
+    vertical-align: middle;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.runButton {
+	width: 100%;
 }
 
 .spinnerShow {

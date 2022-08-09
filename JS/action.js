@@ -6,6 +6,8 @@ createApp({
             endpoint: "http://127.0.0.1:5000/",
             aaSequence: ["G"],
             dnaSequence: ["A"],
+            aaPostSequence: ["G"],
+            dnaPostSequence: ["A"],
             aaMut: {
                 "G": ["Glycine", "glycine.png"],
                 "A": ["Alanine", "alanine.png"],
@@ -36,6 +38,10 @@ createApp({
             },
             dna: 0,
             aa: 0,
+            dnaMutCode: "",
+            aaMutCode: "",
+            dnaSlider: false,
+            aaSlider: false,
             aaImgs: {},
             dnaImgs: {},
             aboutShow: false,
@@ -48,6 +54,7 @@ createApp({
         }
     },
     methods: {
+        // Metodo para mostrar/ocultar segmentos de la Single Page Application (SPA)
         show(something) {
             this.aboutShow = false;
             this.howtoShow = false;
@@ -59,6 +66,76 @@ createApp({
                 this.howtoShow = true;
             }
             this[something] = true;
+        },
+        // Metodo para actualizar el codigo de mutacion al cambiar el slider DNA
+        updateDNAMut() {
+            this.dnaMutCode = this.dnaSequence[this.dna] + (+this.dna + 1) + this.dnaPostSequence[this.dna];
+        },
+        // Metodo para actualizar el codigo de mutacion al seleccionar una mutacion DNA
+        onDNA(nam) {
+            this.dnaPostSequence[this.dna] = nam;
+            this.dnaMutCode = this.dnaSequence[this.dna] + (+this.dna + 1) + nam;
+            var difference = 0;
+            for (var i = 0; i < this.dnaSequence.length; i++) {
+                if (this.dnaSequence[i] != this.dnaPostSequence[i]) {
+                    difference = difference + 1;
+                }
+            }
+            if (difference == 0) {
+                this.dnaSlider = false;
+            } else {
+                this.dnaSlider = true;
+            }
+        },
+        // Metodo para actualizar el codigo de mutacion al cambiar el slider AA
+        updateAAMut() {
+            this.aaMutCode = this.aaSequence[this.aa] + (+this.aa + 1) + this.aaPostSequence[this.aa];
+        },
+        // Metodo para actualizar el codigo de mutacion al seleccionar una mutacion AA
+        onAA(nam) {
+            this.aaPostSequence[this.aa] = nam;
+            this.aaMutCode = this.aaSequence[this.aa] + (+this.aa + 1) + nam;
+            var difference = 0;
+            for (var i = 0; i < this.aaSequence.length; i++) {
+                if (this.aaSequence[i] != this.aaPostSequence[i]) {
+                    difference = difference + 1;
+                }
+            }
+            if (difference == 0) {
+                this.aaSlider = false;
+            } else {
+                this.aaSlider = true;
+            }
+        },
+        // Metodo para enviar el codigo de mutacion al backend DNA
+        runDNA() {
+            axios
+                .get(this.endpoint + 'dnamutate',
+                    {params: {
+                        code: this.dnaMutCode
+                    }
+                    })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+        // Metodo para enviar el codigo de mutacion al backend DNA
+        runAA() {
+            axios
+                .get(this.endpoint + 'aamutate',
+                    {params: {
+                        code: this.aaMutCode
+                    }
+                    })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         }
     },
     // This will be done before the app is mounted
@@ -68,8 +145,8 @@ createApp({
             await axios
                         .get(this.endpoint + "aaseq")
                         .then(response => {
-                            console.log(response.data);
                             this.aaSequence = response.data.split("");
+                            this.aaPostSequence = response.data.split("");
                         })
                         .catch(error => {
                             console.log(error);
@@ -80,8 +157,8 @@ createApp({
             await axios
                         .get(this.endpoint + "dnaseq")
                         .then(response => {
-                            console.log(response.data);
                             this.dnaSequence = response.data.split("");
+                            this.dnaPostSequence = response.data.split("");
                         })
                         .catch(error => {
                             console.log(error);
