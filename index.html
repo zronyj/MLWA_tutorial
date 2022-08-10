@@ -108,7 +108,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="slider">
                                     <label for="dnaSlider" class="form-label">Select nucleotide:&nbsp;&nbsp;</label><span class="codeIndi">[{{+dna + 1}}]</span>
-                                    <input type="range" class="form-range" min="0" :max="dnaSequence.length - 1" id="dnaSlider" v-model="dna" v-on:change="updateDNAMut()" :disabled="dnaSlider">
+                                    <input type="range" class="form-range" min="0" :max="dnaSequence.length - 1" id="dnaSlider" v-model="dna" :change="updateDNAMut()" :disabled="dnaSlider || disableControls">
                                 </div>
                             </div>
                             <!-- Botones (en grupo) -->
@@ -116,7 +116,7 @@
                                 <div class="btn-group" role="group" aria-label="Buttons to select alternative nucleotide">
                                     <div class="container row mutOpts" style="display: contents;">
                                         <div class="col mutOpt" v-for="(value, name, index) in dnaMut">
-                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off" v-on:click="onDNA(name)">
+                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off" v-on:click="onDNA(name)" :disabled="disableControls">
                                             <label class="btn btn-outline-primary" :for="'btnRadio' + index" :title="value[0]">{{name}}</label>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                                         <input type="text" name="mutcode" v-model="dnaMutCode" disabled="true">
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-success runButton">Run model!</button>
+                                <button type="button" class="btn btn-success runButton" v-on:click="runDNA()" :disabled="disableControls">Run model!</button>
                             </div>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="slider">
                                     <label for="aaSlider" class="form-label">Select amino acid:&nbsp;&nbsp;</label><span class="codeIndi">[{{+aa + 1}}]</span>
-                                    <input type="range" class="form-range" min="0" :max="aaSequence.length - 1" id="aaSlider" v-model="aa" v-on:change="updateAAMut()" :disabled="aaSlider">
+                                    <input type="range" class="form-range" min="0" :max="aaSequence.length - 1" id="aaSlider" v-model="aa" :change="updateAAMut()" :disabled="aaSlider || disableControls">
                                 </div>
                             </div>
                             <!-- Botones (en grupo) -->
@@ -195,7 +195,7 @@
                                 <div class="btn-group" role="group" aria-label="Buttons to select alternative amino acid">
                                     <div class="container row mutOpts">
                                         <div class="col mutOpt" v-for="(value, name, index) in aaMut">
-                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off" v-on:click="onAA(name)">
+                                            <input type="radio" class="btn-check" name="btnradio" :id="'btnRadio' + index" autocomplete="off" v-on:click="onAA(name)" :disabled="disableControls">
                                             <label class="btn btn-outline-primary" :for="'btnRadio' + index" :title="value[0]">{{name}}</label>
                                         </div>
                                     </div>
@@ -213,7 +213,7 @@
                                         <input type="text" name="mutcode" v-model="aaMutCode" disabled="true">
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-success runButton">Run model!</button>
+                                <button type="button" class="btn btn-success runButton" v-on:click="runAA()" :disabled="disableControls">Run model!</button>
                             </div>
                         </div>
                     </div>
@@ -229,8 +229,44 @@
                     <h2>Results</h2>
                     <div class="container">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
-                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Machine Learning Prediction
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6 mutDesc">Pathogenic:</div>
+                                            <div class="col-6">
+                                                <input type="text" name="patho" disabled="true" v-model="patho">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 mutDesc">Percent:</div>
+                                            <div class="col-6">
+                                                <input type="text" name="perce" disabled="true" v-model="perce">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 mutDesc">Model status:</div>
+                                            <div class="col-6">
+                                                <input type="text" name="model" disabled="true" v-model="model">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Start over?
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Do you wish to run the model again?</p>
+                                        <button type="button" class="btn btn-primary">Run again</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

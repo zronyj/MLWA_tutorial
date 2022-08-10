@@ -40,10 +40,14 @@ createApp({
             aa: 0,
             dnaMutCode: "",
             aaMutCode: "",
+            patho: "",
+            perce: "",
+            model: "",
             dnaSlider: false,
             aaSlider: false,
             aaImgs: {},
             dnaImgs: {},
+            disableControls: false,
             aboutShow: false,
             howtoShow: true,
             dnaShow: true,
@@ -109,31 +113,53 @@ createApp({
         },
         // Metodo para enviar el codigo de mutacion al backend DNA
         runDNA() {
+            this.disableControls = true;
+            this.spinnerShow = true;
             axios
-                .get(this.endpoint + 'dnamutate',
-                    {params: {
-                        code: this.dnaMutCode
-                    }
+                .get(this.endpoint + 'dnamutate', // Enviar solicitud a nueva ruta
+                    {
+                        params: {
+                            code: this.dnaMutCode // Incluir codigo como argumento
+                        }
                     })
                 .then(response => {
-                    console.log(response.data);
+                    console.log(response.data); // Si todo sale bien
+                    this.spinnerShow = false;
+                    if (response.data["model"]) {
+                        this.patho = response.data["pathogenicity"];
+                        this.perce = response.data["percent"];
+                        this.model = response.data["model"];
+                        this.resultsShow = true;
+                    }
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.spinnerShow = false;
+                    console.log(error); // Si algo NO sale bien
                 })
         },
         // Metodo para enviar el codigo de mutacion al backend DNA
         runAA() {
+            this.disableControls = true;
+            this.spinnerShow = true;
             axios
                 .get(this.endpoint + 'aamutate',
-                    {params: {
-                        code: this.aaMutCode
-                    }
+                    {
+                        params: {
+                            code: this.aaMutCode
+                        }
                     })
                 .then(response => {
                     console.log(response.data);
+                    this.spinnerShow = false;
+                    if (response.data["model"]) {
+                        this.patho = response.data["pathogenicity"];
+                        this.perce = response.data["percent"];
+                        this.model = response.data["model"];
+                        this.resultsShow = true;
+                    }
                 })
                 .catch(error => {
+                    this.spinnerShow = false;
                     console.log(error);
                 })
         }
