@@ -113,55 +113,91 @@ createApp({
         },
         // Metodo para enviar el codigo de mutacion al backend DNA
         runDNA() {
-            this.disableControls = true;
-            this.spinnerShow = true;
-            axios
-                .get(this.endpoint + 'dnamutate', // Enviar solicitud a nueva ruta
-                    {
-                        params: {
-                            code: this.dnaMutCode // Incluir codigo como argumento
-                        }
-                    })
-                .then(response => {
-                    console.log(response.data); // Si todo sale bien
-                    this.spinnerShow = false;
-                    if (response.data["model"]) {
-                        this.patho = response.data["pathogenicity"];
-                        this.perce = response.data["percent"];
-                        this.model = response.data["model"];
-                        this.resultsShow = true;
+            // Si el codigo es mas corto o mas largo de lo que deberia de ser ...
+            if ((this.dnaMutCode.length >= 3) && (this.dnaMutCode.length <= 5)) {
+                var primera = this.dnaMutCode.slice(0,1); // Primera letra del codigo
+                var ultima = this.dnaMutCode.slice(-1); // Ultima letra del codigo
+                // Si alguna de las letras incluidas en el codigo no corresponde a las existentes o si ambas son iguales
+                if (Object.keys(this.dnaMut).includes(primera) && Object.keys(this.dnaMut).includes(ultima) && (primera != ultima)) {
+                    var numero = this.dnaMutCode.slice(1,-1);
+                    // Si el numero es mas grande o mas pequeno que la longitud de la secuencia
+                    if ((+numero >= 1) && (+numero <= this.dnaSequence.length)) {
+                        this.disableControls = true;
+                        this.spinnerShow = true;
+                        axios
+                            .get(this.endpoint + 'dnamutate', // Enviar solicitud a nueva ruta
+                                {
+                                    params: {
+                                        code: this.dnaMutCode // Incluir codigo como argumento
+                                    }
+                                })
+                            .then(response => {
+                                console.log(response.data); // Si todo sale bien
+                                this.spinnerShow = false;
+                                if (response.data["model"]) {
+                                    this.patho = response.data["pathogenicity"];
+                                    this.perce = response.data["percent"];
+                                    this.model = response.data["model"];
+                                    this.resultsShow = true;
+                                }
+                            })
+                            .catch(error => {
+                                this.spinnerShow = false;
+                                console.log(error); // Si algo NO sale bien
+                            })
+                    } else {
+                        console.log("Error de numero")
                     }
-                })
-                .catch(error => {
-                    this.spinnerShow = false;
-                    console.log(error); // Si algo NO sale bien
-                })
+                } else {
+                    console.log("Error de letras")
+                }
+            } else {
+                console.log("Error de longitud")
+            }
         },
         // Metodo para enviar el codigo de mutacion al backend DNA
         runAA() {
-            this.disableControls = true;
-            this.spinnerShow = true;
-            axios
-                .get(this.endpoint + 'aamutate',
-                    {
-                        params: {
-                            code: this.aaMutCode
-                        }
-                    })
-                .then(response => {
-                    console.log(response.data);
-                    this.spinnerShow = false;
-                    if (response.data["model"]) {
-                        this.patho = response.data["pathogenicity"];
-                        this.perce = response.data["percent"];
-                        this.model = response.data["model"];
-                        this.resultsShow = true;
+            // Si el codigo es mas corto o mas largo de lo que deberia de ser ...
+            if ((this.aaMutCode.length >= 3) && (this.aaMutCode.length <= 5)) {
+                var primera = this.aaMutCode.slice(0,1); // Primera letra del codigo
+                var ultima = this.aaMutCode.slice(-1); // Ultima letra del codigo
+                // Si alguna de las letras incluidas en el codigo no corresponde a las existentes o si ambas son iguales
+                if (Object.keys(this.aaMut).includes(primera) && Object.keys(this.aaMut).includes(ultima) && (primera != ultima)) {
+                    var numero = this.aaMutCode.slice(1,-1);
+                    // Si el numero es mas grande o mas pequeno que la longitud de la secuencia
+                    if ((+numero >= 1) && (+numero <= this.aaSequence.length)) {
+                        this.disableControls = true;
+                        this.spinnerShow = true;
+                        axios
+                            .get(this.endpoint + 'aamutate',
+                                {
+                                    params: {
+                                        code: this.aaMutCode
+                                    }
+                                })
+                            .then(response => {
+                                console.log(response.data);
+                                this.spinnerShow = false;
+                                if (response.data["model"]) {
+                                    this.patho = response.data["pathogenicity"];
+                                    this.perce = response.data["percent"];
+                                    this.model = response.data["model"];
+                                    this.resultsShow = true;
+                                }
+                            })
+                            .catch(error => {
+                                this.spinnerShow = false;
+                                console.log(error);
+                            })
+                    } else {
+                        console.log("Error de numero")
                     }
-                })
-                .catch(error => {
-                    this.spinnerShow = false;
-                    console.log(error);
-                })
+                } else {
+                    console.log("Error de letras")
+                }
+            } else {
+                console.log("Error de longitud")
+            }      
         }
     },
     // This will be done before the app is mounted
