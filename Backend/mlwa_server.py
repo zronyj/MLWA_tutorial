@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+import ML_model
 import time
 
 # --------------------------------- Variables ---------------------------------
@@ -49,6 +50,16 @@ CORS(app)
 
 # ---------------------------------- Methods ----------------------------------
 
+# Method to extract a code from an amino acid sequence
+def aa_seq_2_code(seq):
+    if len(seq) != len(aa_seq):
+        raise Exception("There has been an error with the DNA to AA sequence.")
+    code = ["M", 1, "M"]
+    for i in range(len(seq)):
+        if seq[i] != aa_seq[i]:
+            code = [seq[i], i + 1, aa_seq[i]]
+    return code
+
 # Method to translate DNA into amino acids
 def ribosome(dna_s):
     if len(dna_s) % 3 == 0:
@@ -71,7 +82,7 @@ def ribosome(dna_s):
         return [False, ""]
 
 # Method to create a mutated sequence of amino acids, based on DNA
-def dna_seq_generator(code):
+def dna_mutator(code):
     # If the code is longer or shorter than it should
     if ((len(code) >= 3) and (len(code) <= 5)):
         primera = code[0]
@@ -89,25 +100,51 @@ def dna_seq_generator(code):
                     dna_seq_string = "".join(new_seq_list)
                     translate_ok, aa_seq_string = ribosome(dna_seq_string)
                     if translate_ok:
-                        return aa_seq_string
+                        new_aa, new_code, new_mut_aa = aa_seq_2_code(aa_seq_string)
+                        predicted_mutation = ML_model.get_prediction(new_aa, new_code - 1, new_mut_aa)
+                        return {"pathogenicity": predicted_mutation["pathogenicity"],
+                                "percent": predicted_mutation["percent"],
+                                "code": predicted_mutation["code"],
+                                "model": True,
+                                "sequence": aa_seq_string}
                     else:
                         print("An error happened during translation ...")
-                        return ""
+                        return {"pathogenicity": False,
+                                "percent": 0,
+                                "code": code,
+                                "model": False,
+                                "sequence": ""}
                 else:
                     print("The letter from the code and the sequence at the provided position don't match!")
-                    return ""
+                    return {"pathogenicity": False,
+                            "percent": 0,
+                            "code": code,
+                            "model": False,
+                            "sequence": ""}
             else:
                 print("The provided number is out of range of the sequence's length.")
-                return ""
+                return {"pathogenicity": False,
+                        "percent": 0,
+                        "code": code,
+                        "model": False,
+                        "sequence": ""}
         else:
             print("One/Both of the provided letters don't belong to the sequence.")
-            return ""
+            return {"pathogenicity": False,
+                    "percent": 0,
+                    "code": code,
+                    "model": False,
+                    "sequence": ""}
     else:
         print("The code's length presents an error.")
-        return ""
+        return {"pathogenicity": False,
+                "percent": 0,
+                "code": code,
+                "model": False,
+                "sequence": ""}
 
 # Method to create a mutated sequence of amino acids
-def aa_seq_generator(code):
+def aa_mutator(code):
     # If the code is longer or shorter than it should
     if ((len(code) >= 3) and (len(code) <= 5)):
         primera = code[0]
@@ -122,19 +159,40 @@ def aa_seq_generator(code):
                 if (aa_seq[numero - 1] == primera):
                     new_seq_list = list(aa_seq)
                     new_seq_list[numero - 1] = ultima
-                    return "".join(new_seq_list)
+                    predicted_mutation = ML_model.get_prediction(primera, numero - 1, ultima)
+                    return {"pathogenicity": predicted_mutation["pathogenicity"],
+                            "percent": predicted_mutation["percent"],
+                            "code": predicted_mutation["code"],
+                            "model": True,
+                            "sequence": "".join(new_seq_list)}
                 else:
                     print("The letter from the code and the sequence at the provided position don't match!")
-                    return ""
+                    return {"pathogenicity": False,
+                            "percent": 0,
+                            "code": code,
+                            "model": False,
+                            "sequence": ""}
             else:
                 print("The provided number is out of range of the sequence's length.")
-                return ""
+                return {"pathogenicity": False,
+                        "percent": 0,
+                        "code": code,
+                        "model": False,
+                        "sequence": ""}
         else:
             print("One/Both of the provided letters don't belong to the sequence.")
-            return ""
+            return {"pathogenicity": False,
+                    "percent": 0,
+                    "code": code,
+                    "model": False,
+                    "sequence": ""}
     else:
         print("The code's length presents an error.")
-        return ""
+        return {"pathogenicity": False,
+                "percent": 0,
+                "code": code,
+                "model": False,
+                "sequence": ""}
 
 # ----------------------------------- Routes ----------------------------------
 
@@ -159,10 +217,10 @@ def dna_mutation():
     if request.method == 'GET':
         if "code" in request.args.keys():
             dna_code = request.args["code"]
-            mutated_dna_seq = dna_seq_generator(dna_code)
+            mutated_dna_seq = dna_mutator(dna_code)
             time.sleep(3) # Let's make the frontend wait for 3 seconds
-            if len(mutated_dna_seq) > 0:
-                return {"pathogenicity": False, "percent": 23, "code": dna_code, "model": True, "sequence": mutated_dna_seq}
+            if len(mutated_dna_seq["sequence"]) > 0:
+                return mutated_dna_seq
             else:
                 {"pathogenicity": False, "percent": 0, "code": dna_code, "model": False, "sequence": mutated_dna_seq}
         else:
@@ -170,16 +228,16 @@ def dna_mutation():
     else:
         {"pathogenicity": False, "percent": 0, "code": dna_code, "model": False, "sequence": mutated_dna_seq}
 
-# Route for the URL "/aamutate" --> DNA
+# Route for the URL "/aamutate" --> Amino Acid
 @app.route("/aamutate", methods=['GET'])
 def aa_mutation():
     if request.method == 'GET':
         if "code" in request.args.keys():
             aa_code = request.args["code"]
-            mutated_aa_seq = aa_seq_generator(aa_code)
+            mutated_aa_seq = aa_mutator(aa_code)
             time.sleep(3) # Let's make the frontend wait for 3 seconds
-            if len(mutated_aa_seq) > 0:
-                return {"pathogenicity": False, "percent": 32, "code": aa_code, "model": True, "sequence": mutated_aa_seq}
+            if len(mutated_aa_seq["sequence"]) > 0:
+                return mutated_aa_seq
             else:
                 return {"pathogenicity": False, "percent": 0, "code": aa_code, "model": False, "sequence": mutated_aa_seq}
         else:
